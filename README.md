@@ -42,6 +42,7 @@
 <!-- Your community, and what your classifier sorts posts into. Three or four
      sentences. -->
 
+TakeMeter is a text classifier trained on public posts collected from the r/artificial Reddit community. It classifies posts as `evidence_based`, `reasoned_opinion`, or `unsupported_reaction` according to how the author supports the post's main claim. The classifier is intended to distinguish sourced discussion, explained opinions, and unsupported reactions without judging whether the author's position is personally agreeable.
 
 
 ---
