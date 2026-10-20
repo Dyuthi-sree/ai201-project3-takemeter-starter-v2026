@@ -55,25 +55,35 @@ TakeMeter is a text classifier trained on public posts collected from the r/arti
      The decision rule is worth a point on its own and it's the thing most
      people leave out. Every taxonomy has a hardest boundary. Name yours. -->
 
-### `label_one`
+### `evidence_based` 
 
-**Definition:**
+**Definition:** A post whose main claim is supported by a statistic, study, named source, quotation, documented event, release note, or other independently checkable evidence.
 
-**Example 1:**
->
-
-**Example 2:**
->
-
-### `label_two`
-
-**Definition:**
 
 **Example 1:**
->
+>“Anthropic ran a 26B model across 15 off-brand Android TV boxes worth $55 each.”
 
 **Example 2:**
->
+>“We ran 500 questions through Gemini to see when it searches the web.”
+
+### `reasoned_opinion`
+
+**Definition:** A post that explains its position through reasoning, examples, comparison, or personal experience but does not provide independently checkable evidence for the main claim.
+
+**Example 1:**
+> “My theory after a year of customer support: AI makes people more confident, not more correct.”
+
+**Example 2:**
+> “AI companions may reduce loneliness and increase isolation at the same time.”
+### `unsupported_reaction`
+
+**Definition:** A post that mainly gives a judgment, prediction, emotional reaction, or question without meaningful supporting reasoning or checkable evidence.
+
+**Example 1:**
+> “Why do people blame AI for AI slop?”
+
+**Example 2:**
+> “What's the most annoying thing about using AI that nobody seems to be fixing?”
 
 ### The hardest boundary
 
@@ -82,7 +92,7 @@ TakeMeter is a text classifier trained on public posts collected from the r/arti
 **The decision rule I used every time:**
 <!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
      if the tone is heated." -->
-
+The hardest boundary is between reasoned_opinion and unsupported_reaction. If the post explains why through a causal argument, comparison, concrete example, or relevant personal experience, label it reasoned_opinion. If it mainly states a conclusion, reaction, prediction, or question without explaining why, label it unsupported_reaction. A link, named study, statistic, quotation, release, or documented event that supports the main claim moves the post to evidence_based.
 
 
 ---
@@ -93,6 +103,7 @@ TakeMeter is a text classifier trained on public posts collected from the r/arti
      cases. -->
 
 **Where the posts came from:**
+The text was collected manually from the public New, Hot, Best, and Top feeds of Reddit's r/artificial community across multiple browsing sessions. Advertisements, duplicate posts, deleted content, subreddit navigation text, and clearly unrelated posts were removed. Whole text posts were retained rather than shortened.
 
 **How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
 Say so plainly — the disclosure is required, not penalised. -->
