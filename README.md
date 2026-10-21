@@ -136,17 +136,19 @@ The dataset is reasonably balanced. No single label accounts for more than 40% o
 
 ---
 
-## The Training Run
-
 <!-- Your starting model, your settings, and anything you changed and why. -->
 
-**Base model:**
+## The Training Run
 
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Base model:** `distilbert-base-uncased`
 
-**Anything I changed from the defaults, and why:**
+**Settings:** 3 epochs, learning rate `2e-5`, batch size 16, maximum sequence length 128, and random seed 42. Training ran with PyTorch 2.14.1 using Apple Silicon GPU acceleration (`mps`).
 
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
+**Anything I changed from the defaults, and why:** I kept the default training hyperparameters so this first run would provide a clear baseline for comparison. I changed only the label list so it matched the labels in `labels.csv`: `evidence_based`, `reasoned_opinion`, and `unsupported_reaction`.
+
+**Split sizes:** 104 training posts, 23 validation posts, and 23 test posts. The test split contained 9 `evidence_based`, 8 `reasoned_opinion`, and 6 `unsupported_reaction` posts. Because `unsupported_reaction` had only six test examples, its metric may vary noticeably across different random seeds.
+
+**Initial results:** The held-out accuracy was `0.565` and macro F1 was `0.431`. Per-label F1 was `0.625` for `evidence_based`, `0.667` for `reasoned_opinion`, and `0.000` for `unsupported_reaction`. <!-- train / val / test, and per-label counts in the test
 split. If a label had fewer than about 8 in test, say so — it explains a lot
 of next unit's variance. -->
 
@@ -156,27 +158,19 @@ of next unit's variance. -->
 
 ## How I Used AI
 
-<!-- Two specific moments — what you asked, what came back, what you changed.
-
-     ⚠️ Plus disclosure of any pre-labelling. If you had a model pre-label a
-     batch and then read and corrected every one, say that. It's an allowed
-     workflow and disclosing it costs you nothing. Not disclosing it is the
-     problem. -->
-
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I asked AI to help turn the general idea of post quality into three clear labels that could be applied consistently to posts from `r/artificial`.
+- *What came back:* It suggested separating posts with checkable evidence, posts containing explained opinions, and posts containing unsupported reactions.
+- *What I changed:* I refined these categories into `evidence_based`, `reasoned_opinion`, and `unsupported_reaction`. I also wrote a specific decision rule for the difficult boundary between `reasoned_opinion` and `unsupported_reaction`.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I asked AI to check my dataset format, label distribution, and notebook configuration before training.
+- *What came back:* It identified the required `text`, `label`, and `note` columns, summarized the label distribution, and noticed that the notebook’s starter labels did not match the labels in my CSV.
+- *What I changed:* I corrected the CSV column name, verified the dataset contained 150 posts, and changed the notebook label list to exactly match my dataset before rerunning the training.
 
-**Pre-labelling disclosure:**
-
+**Pre-labelling disclosure:** AI was used to propose labels for the collected posts and to help identify advertisements, interface text, blank entries, and duplicates. I reviewed the proposed labels against my written taxonomy and used my decision rule to resolve ambiguous cases before training.
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
      Don't fill these in during unit 5.
