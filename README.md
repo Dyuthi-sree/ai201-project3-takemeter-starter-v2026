@@ -103,45 +103,36 @@ The hardest boundary is between reasoned_opinion and unsupported_reaction. If th
      cases. -->
 
 **Where the posts came from:**
-The text was collected manually from the public New, Hot, Best, and Top feeds of Reddit's r/artificial community across multiple browsing sessions. Advertisements, duplicate posts, deleted content, subreddit navigation text, and clearly unrelated posts were removed. Whole text posts were retained rather than shortened.
+I collected 150 public posts from the `r/artificial` subreddit. I used posts from the New, Hot, and Best feeds so the dataset included news links, research discussions, personal opinions, questions, project announcements, and short reactions. Advertisements, navigation text, empty entries, and exact duplicates were removed.
 
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**How I labelled them:**  
+I used three labels: `evidence_based`, `reasoned_opinion`, and `unsupported_reaction`. Each post was labelled according to the support contained in its text, rather than its Reddit flair. AI assistance was used to propose labels, and the suggestions were checked against the written label definitions. Ambiguous cases were decided by asking whether the post contained independently checkable evidence, meaningful reasoning without external evidence, or neither.
+
 
 **Counts per label:**
 
-| Label | Count | Share |
-|---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| Label | Count | Percentage |
+|---|---:|---:|
+| `evidence_based` | 59 | 39.3% |
+| `reasoned_opinion` | 54 | 36.0% |
+| `unsupported_reaction` | 37 | 24.7% |
+| **Total** | **150** | **100%** |
+
+The dataset is reasonably balanced. No single label accounts for more than 40% of the examples. `unsupported_reaction` is the smallest label because the subreddit contains many detailed news and discussion posts, while short unsupported reactions are less common in the main feed.
 
 **Three hard cases**
 
 <!-- Any post that made you pause: what it was, which two labels it could have
      been, and what you chose. These are worth more than the easy 190. -->
 
-**1.**
-> *The post:*
->
-> *Could have been:*
->
-> *I chose, because:*
+1. **“AI deepfakes are getting out of hand.”**  
+   I considered `unsupported_reaction` because the title is primarily an emotional judgment. However, the post includes a link to a report about Microsoft Teams detecting deepfakes. I labelled it `evidence_based` because its concern is connected to an independently checkable source.
 
-**2.**
-> *The post:*
->
-> *Could have been:*
->
-> *I chose, because:*
+2. **“If an AI can't decide what to want, can it ever be truly conscious?”**  
+   I considered `unsupported_reaction` and `reasoned_opinion`. I selected `reasoned_opinion` because the author explains the distinction between following an assigned goal and independently choosing a goal. The argument contains reasoning, but it does not rely on a study or other external evidence.
 
-**3.**
-> *The post:*
->
-> *Could have been:*
->
-> *I chose, because:*
+3. **“What if the AI boom goes bust?”**  
+   I labelled this `unsupported_reaction` because it asks a broad question without offering supporting evidence, examples, or a developed explanation. The title expresses a concern, but there is not enough reasoning to place it under `reasoned_opinion`.
 
 ---
 
