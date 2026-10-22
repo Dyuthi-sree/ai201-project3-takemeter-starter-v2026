@@ -214,29 +214,29 @@ Before running the Unit 6 experiments, I decided to attempt all three stretch fe
      spread table; the Target and Verdict columns are yours. -->
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
-|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+|---|---:|---:|---:|---:|---|
+| 1. Overall accuracy | ≥ 0.55 | 0.565 | 0.522 | 0.391 | MISSED |
+| 2. Macro F1 | ≥ 0.45 | 0.431 | 0.403 | 0.282 | MISSED |
+| 3. F1 — `evidence_based` | ≥ 0.55 | 0.625 | 0.615 | 0.286 | MISSED |
+| 4. F1 — `reasoned_opinion` | ≥ 0.55 | 0.667 | 0.593 | 0.560 | MET |
+| 5. F1 — `unsupported_reaction` | ≥ 0.35 | 0.000 | 0.000 | 0.000 | MISSED |
 
 ### Confusion matrix
 
-<!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
-     An image of a matrix earns nothing. -->
+**Device:** `mps` — Apple Silicon GPU, PyTorch 2.14.1.
 
-| true \ predicted |  |  |  |
-|---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| true \ predicted | `evidence_based` | `reasoned_opinion` | `unsupported_reaction` |
+|---|---:|---:|---:|
+| **`evidence_based`** | 5 | 4 | 0 |
+| **`reasoned_opinion`** | 0 | 8 | 0 |
+| **`unsupported_reaction`** | 2 | 4 | 0 |
 
 **My biggest off-diagonal number, and what it means:**
+
+Four real `evidence_based` posts were predicted as `reasoned_opinion`, while zero real `reasoned_opinion` posts were predicted as `evidence_based`. Four real `unsupported_reaction` posts were also predicted as `reasoned_opinion`. Most importantly, the model never predicted `unsupported_reaction`; all six real examples were assigned to another label. This shows that the model did not learn a usable boundary for `unsupported_reaction`.
 <!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
      direction. "7 real analysis posts were called hot_take and only 3 went the
      other way" is a direction, not just an error rate. -->
-
 
 
 ---
@@ -247,14 +247,21 @@ Before running the Unit 6 experiments, I decided to attempt all three stretch fe
      all three seeds, not turn up sometimes. -->
 
 | # | Criterion | Target | Verdict | How I decided |
-|---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
-
+|---|---|---:|---|---|
+| 1 | Overall accuracy | ≥ 0.55 | MISSED | Only Seed 42 reached the target. Seeds 7 and 2024 scored 0.522 and 0.391. |
+| 2 | Macro F1 | ≥ 0.45 | MISSED | None of the three seeds reached 0.45; the highest macro F1 was 0.431. |
+| 3 | F1 — `evidence_based` | ≥ 0.55 | MISSED | Seeds 42 and 7 passed, but Seed 2024 scored only 0.286. The target had to hold across all three seeds. |
+| 4 | F1 — `reasoned_opinion` | ≥ 0.55 | MET | All three scores—0.667, 0.593, and 0.560—met the target. |
+| 5 | F1 — `unsupported_reaction` | ≥ 0.35 | MISSED | Its F1 was 0.000 for every seed, so it never reached the target. |
 **Diagnoses**
+
+Criteria 1 and 2 were missed because the classifier was unstable across random splits. Overall accuracy changed by 0.174 and macro F1 changed by 0.149. With only 150 posts, moving a small number of difficult examples between training and testing substantially changed the measured performance.
+
+Criterion 3 was missed because `evidence_based` was unstable across splits. Its F1 fell from 0.625 and 0.615 to 0.286 for Seed 2024. The Seed 42 confusion matrix also shows that four of nine real `evidence_based` posts were classified as `reasoned_opinion`, revealing a difficult one-directional boundary between those labels.
+
+Criterion 5 was the clearest failure. `unsupported_reaction` received an F1 of 0.000 for every seed. In the Seed 42 confusion matrix, none of its six examples were classified correctly: four were called `reasoned_opinion` and two were called `evidence_based`. The model never predicted `unsupported_reaction`. This label also has the fewest training examples, with 37 compared with 54 and 59 for the other labels.
+
+These are preliminary model and dataset diagnoses. The agreement report will show whether inconsistent human labeling also contributed to these failures.
 
 <!-- For each miss: the cause, and how you know. The four common causes are:
      too few examples for a label, a boundary you applied inconsistently, a
