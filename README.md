@@ -255,13 +255,13 @@ Four real `evidence_based` posts were predicted as `reasoned_opinion`, while zer
 | 5 | F1 — `unsupported_reaction` | ≥ 0.35 | MISSED | Its F1 was 0.000 for every seed, so it never reached the target. |
 **Diagnoses**
 
-Criteria 1 and 2 were missed because the classifier was unstable across random splits. Overall accuracy changed by 0.174 and macro F1 changed by 0.149. With only 150 posts, moving a small number of difficult examples between training and testing substantially changed the measured performance.
+Criteria 1 and 2 were missed because the classifier was unstable across random splits. Overall accuracy changed by 0.174 and macro F1 changed by 0.149. With only 150 posts, moving a small number of difficult examples between training and testing substantially changed the results.
 
-Criterion 3 was missed because `evidence_based` was unstable across splits. Its F1 fell from 0.625 and 0.615 to 0.286 for Seed 2024. The Seed 42 confusion matrix also shows that four of nine real `evidence_based` posts were classified as `reasoned_opinion`, revealing a difficult one-directional boundary between those labels.
+Criterion 3 was missed because `evidence_based` was unstable across splits. Its F1 fell from 0.625 and 0.615 to 0.286 for Seed 2024. The Seed 42 confusion matrix shows that four of nine real `evidence_based` posts were classified as `reasoned_opinion`, demonstrating a difficult one-directional boundary between those labels.
 
-Criterion 5 was the clearest failure. `unsupported_reaction` received an F1 of 0.000 for every seed. In the Seed 42 confusion matrix, none of its six examples were classified correctly: four were called `reasoned_opinion` and two were called `evidence_based`. The model never predicted `unsupported_reaction`. This label also has the fewest training examples, with 37 compared with 54 and 59 for the other labels.
+Criterion 5 was the clearest failure. `unsupported_reaction` received an F1 of 0.000 for every seed. In the Seed 42 confusion matrix, four of its six test examples were predicted as `reasoned_opinion` and two as `evidence_based`. The model never predicted `unsupported_reaction`.
 
-These are preliminary model and dataset diagnoses. The agreement report will show whether inconsistent human labeling also contributed to these failures.
+The agreement report produced 30 out of 30 matches under the staff taxonomy. Therefore, it does not provide evidence that I inconsistently applied clearly written rules. The more strongly supported cause is limited learning from a small and uneven dataset: `unsupported_reaction` has only 37 examples, compared with 54 `reasoned_opinion` and 59 `evidence_based` examples. Its wording may also overlap with unsupported opinions, making this boundary difficult for the model.
 
 <!-- For each miss: the cause, and how you know. The four common causes are:
      too few examples for a label, a boundary you applied inconsistently, a
@@ -284,14 +284,17 @@ These are preliminary model and dataset diagnoses. The agreement report will sho
      data/staff_taxonomy.md, not your own — so every argument below is made
      from those definitions and those decision rules. -->
 
-**Agreement rate:** ___ / 30 = ___%
+## Agreement Report
 
-<!-- Nobody grades this number. A 60% who argues every disagreement from the
-     stated rules beats a 95% who wrote "staff was right" nine times. Several
-     of the 30 were chosen because they're genuinely ambiguous — you should be
-     winning some of these. -->
+**Agreement rate:** **30 / 30 = 100%**
 
 **Disagreements**
+
+There were no disagreements. I assigned the same label as the staff for all 30 posts, so there were no cases to adjudicate or place into piles (a), (b), or (c).
+
+**What the pattern in my disagreements tells me:**
+
+The staff set was relatively easy because its examples closely followed the written distinctions: `analysis` used load-bearing facts, `hot_take` made general unsupported claims, and `reaction` described immediate personal experiences. However, matching all 30 examples still shows that I can consistently apply a clearly written taxonomy. Therefore, the poor `unsupported_reaction` performance in my trained classifier is not supported as a general rule-application problem by this agreement test. The stronger evidence points toward the smaller number of `unsupported_reaction` examples and the model failing to learn that boundary from the available data.
 
 <!-- Three lines each: the post, both labels, and who you think is right and
      why — grounded in the staff definitions you were both applying.
