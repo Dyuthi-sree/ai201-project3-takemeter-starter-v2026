@@ -337,19 +337,43 @@ The staff set was relatively easy because its examples closely followed the writ
 
 **What I changed:**
 
+I increased training from 3 epochs to 5 epochs while keeping the model, dataset, learning rate, batch size, seeds, and evaluation procedure unchanged.
+
 **Which diagnosis pointed at it:**
+
+The model produced an F1 of 0.000 for `unsupported_reaction` across all three seeds and never predicted that label in the Seed 42 confusion matrix. Because the agreement report showed 100% agreement under clearly written rules, I tested whether the model was undertrained rather than immediately changing the labels. Two additional epochs give it more opportunities to learn patterns associated with the smallest label.
+
+### Run Log — After
 
 ### Run Log — After
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
-|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+|---|---:|---:|---:|---:|---|
+| 1. Overall accuracy | ≥ 0.55 | 0.652 | 0.696 | 0.478 | MISSED |
+| 2. Macro F1 | ≥ 0.45 | 0.502 | 0.535 | 0.420 | MISSED |
+| 3. F1 — `evidence_based` | ≥ 0.55 | 0.778 | 0.842 | 0.400 | MISSED |
+| 4. F1 — `reasoned_opinion` | ≥ 0.55 | 0.727 | 0.762 | 0.609 | MET |
+| 5. F1 — `unsupported_reaction` | ≥ 0.35 | 0.000 | 0.000 | 0.250 | MISSED |
+
+#### Confusion Matrix After Improvement — Seed 42
+
+| true \ predicted | `evidence_based` | `reasoned_opinion` | `unsupported_reaction` |
+|---|---:|---:|---:|
+| **`evidence_based`** | 7 | 2 | 0 |
+| **`reasoned_opinion`** | 0 | 8 | 0 |
+| **`unsupported_reaction`** | 2 | 4 | 0 |
+
+The largest off-diagonal error was four real `unsupported_reaction` posts classified as `reasoned_opinion`, while zero real `reasoned_opinion` posts were classified as `unsupported_reaction`. The model therefore continued to favor `reasoned_opinion` over `unsupported_reaction`.
 
 **Did it help, and how do I know:**
+
+Yes, but only partially. Increasing training from 3 to 5 epochs improved accuracy for every seed: from 0.565, 0.522, and 0.391 to 0.652, 0.696, and 0.478. Macro F1 also increased from 0.431, 0.403, and 0.282 to 0.502, 0.535, and 0.420.
+
+The improvement especially helped `evidence_based` and `reasoned_opinion`. In the Seed 42 confusion matrix, correct `evidence_based` predictions increased from 5 to 7.
+
+However, it did not fully fix `unsupported_reaction`. Its F1 remained 0.000 for Seeds 42 and 7 and reached only 0.250 for Seed 2024. The model still never predicted that label in the Seed 42 matrix.
+
+The change also did not improve stability. Accuracy spread increased from 0.174 before the change to 0.217 afterward. Therefore, additional epochs improved average performance but made the results more dependent on the random split.
 
 <!-- If it didn't, say so. Relabelling that didn't help is a genuinely
      interesting result and earns full credit. -->
@@ -360,6 +384,15 @@ The staff set was relatively easy because its examples closely followed the writ
 
 ## What's Still Broken
 
+Criteria 1, 2, 3, and 5 remain missed because their targets did not hold across all three seeds. Seed 2024 continued to perform substantially worse than the other splits, and accuracy spread increased to 0.217.
+
+The largest remaining failure is `unsupported_reaction`. Its F1 was 0.000, 0.000, and 0.250 after the improvement. The model still preferred `reasoned_opinion` for unsupported statements and did not reliably learn the smallest class.
+
+I stopped this improvement at 5 epochs because more training alone had already increased split sensitivity and had not consistently fixed the minority label. My next change would directly address class imbalance rather than continuing to increase epochs.
+
+**The gap between what I meant my labels to capture and what the model learned:**
+
+I intended `unsupported_reaction` to capture short, unsupported emotional or immediate responses, while `reasoned_opinion` should contain an explained viewpoint. The confusion matrix shows that the model mainly learned the broader language of opinions and repeatedly absorbed `unsupported_reaction` into `reasoned_opinion`.
 <!-- For each criterion still missed: what you'd do, and why you stopped. -->
 
 
