@@ -276,7 +276,6 @@ The agreement report produced 30 out of 30 matches under the staff taxonomy. The
 
 ---
 
-## Agreement Report
 
 <!-- Your rate against the staff set, and every disagreement adjudicated.
 
@@ -308,31 +307,7 @@ The staff set was relatively easy because its examples closely followed the writ
      Pile (a) is the one that matters most for your diagnosis: if you applied a
      written rule two different ways on 30 posts, that is direct evidence about
      what you did across your own 200. -->
-
-**1.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
-
-**2.**
-> *The post:*
->
-> *Staff said / I said:*
->
-> *My call, and why:*
->
-> *Which pile:*
-
-**What the pattern in my disagreements tells me:**
-
-
-
 ---
-
 ## The Improvement
 
 **What I changed:**
@@ -341,17 +316,7 @@ I increased training from 3 epochs to 5 epochs while keeping the model, dataset,
 
 **Which diagnosis pointed at it:**
 
-The model produced an F1 of 0.000 for `unsupported_reaction` across all three seeds and never predicted that label in the Seed 42 confusion matrix. Because the agreement report showed 100% agreement under clearly written rules, I tested whether the model was undertrained rather than immediately changing the labels. Two additional epochs give it more opportunities to learn patterns associated with the smallest label.
-
-## Second Improvement — Balanced Training Data
-
-**What I changed:**
-
-I balanced only the training portion of each split by randomly duplicating examples from the smaller labels until every training label had the same number of examples as the largest label. Validation and test examples were not duplicated or changed.
-
-**Which diagnosis pointed at it:**
-
-After five epochs, `unsupported_reaction` still had F1 scores of 0.000, 0.000, and 0.250. It was the smallest label in the original dataset, with 37 examples compared with 54 `reasoned_opinion` and 59 `evidence_based` examples. Additional epochs improved overall performance but did not make the model reliably predict the minority class, so the second change directly addresses class imbalance.
+The model produced an F1 of 0.000 for `unsupported_reaction` across all three seeds and never predicted that label in the Seed 42 confusion matrix. Because the agreement report showed 100% agreement under clearly written rules, I tested whether the model was undertrained rather than immediately changing the labels. Two additional epochs gave it more opportunities to learn patterns associated with the smallest label.
 
 ### Run Log — After
 
@@ -363,7 +328,35 @@ After five epochs, `unsupported_reaction` still had F1 scores of 0.000, 0.000, a
 | 4. F1 — `reasoned_opinion` | ≥ 0.55 | 0.727 | 0.762 | 0.609 | MET |
 | 5. F1 — `unsupported_reaction` | ≥ 0.35 | 0.000 | 0.000 | 0.250 | MISSED |
 
+### Confusion Matrix After First Improvement — Seed 42
+
+| true \ predicted | `evidence_based` | `reasoned_opinion` | `unsupported_reaction` |
+|---|---:|---:|---:|
+| **`evidence_based`** | 7 | 2 | 0 |
+| **`reasoned_opinion`** | 0 | 8 | 0 |
+| **`unsupported_reaction`** | 2 | 4 | 0 |
+
+The largest off-diagonal error was four real `unsupported_reaction` posts classified as `reasoned_opinion`, while zero real `reasoned_opinion` posts were classified as `unsupported_reaction`. The model continued to favor `reasoned_opinion` and never predicted `unsupported_reaction` in this split.
+
+**Did it help, and how do I know:**
+
+Yes, but only partially. Increasing training from 3 to 5 epochs improved accuracy for every seed: from 0.565, 0.522, and 0.391 to 0.652, 0.696, and 0.478. Macro F1 increased from 0.431, 0.403, and 0.282 to 0.502, 0.535, and 0.420.
+
+The improvement especially helped `evidence_based` and `reasoned_opinion`. In the Seed 42 matrix, correct `evidence_based` predictions increased from 5 to 7. However, `unsupported_reaction` remained at 0.000 F1 for Seeds 42 and 7 and reached only 0.250 for Seed 2024.
+
+The change also increased split sensitivity. Accuracy spread increased from 0.174 before the change to 0.217 afterward. Therefore, additional epochs improved overall performance but did not reliably solve the minority-label failure.
+
+---
+
 ## Second Measured Improvement — Balanced Training
+
+**What I changed:**
+
+I kept training at 5 epochs and balanced only the training portion of each split. I randomly duplicated examples from smaller labels until every training label had the same number of examples as the largest label. Validation and test data were not duplicated or changed.
+
+**Which diagnosis pointed at it:**
+
+After five epochs, `unsupported_reaction` still had F1 scores of 0.000, 0.000, and 0.250. It was also the smallest original label, with 37 examples compared with 54 `reasoned_opinion` and 59 `evidence_based` examples. Since additional epochs did not make the classifier reliably predict the smallest class, the second improvement directly addressed training imbalance.
 
 ### Run Log — After Balanced Training
 
@@ -375,42 +368,6 @@ After five epochs, `unsupported_reaction` still had F1 scores of 0.000, 0.000, a
 | 4. F1 — `reasoned_opinion` | ≥ 0.55 | 0.762 | 0.824 | 0.737 | MET |
 | 5. F1 — `unsupported_reaction` | ≥ 0.35 | 0.286 | 0.400 | 0.400 | MISSED |
 
-#### Confusion Matrix After Improvement — Seed 42
-
-| true \ predicted | `evidence_based` | `reasoned_opinion` | `unsupported_reaction` |
-|---|---:|---:|---:|
-| **`evidence_based`** | 7 | 2 | 0 |
-| **`reasoned_opinion`** | 0 | 8 | 0 |
-| **`unsupported_reaction`** | 2 | 4 | 0 |
-
-The largest off-diagonal error was four real `unsupported_reaction` posts classified as `reasoned_opinion`, while zero real `reasoned_opinion` posts were classified as `unsupported_reaction`. The model therefore continued to favor `reasoned_opinion` over `unsupported_reaction`.
-
-**Did it help, and how do I know:**
-
-Yes, but only partially. Increasing training from 3 to 5 epochs improved accuracy for every seed: from 0.565, 0.522, and 0.391 to 0.652, 0.696, and 0.478. Macro F1 also increased from 0.431, 0.403, and 0.282 to 0.502, 0.535, and 0.420.
-
-The improvement especially helped `evidence_based` and `reasoned_opinion`. In the Seed 42 confusion matrix, correct `evidence_based` predictions increased from 5 to 7.
-
-However, it did not fully fix `unsupported_reaction`. Its F1 remained 0.000 for Seeds 42 and 7 and reached only 0.250 for Seed 2024. The model still never predicted that label in the Seed 42 matrix.
-
-The change also did not improve stability. Accuracy spread increased from 0.174 before the change to 0.217 afterward. Therefore, additional epochs improved average performance but made the results more dependent on the random split.
-
-## What's Still Broken
-
-Criteria 1, 2, 3, and 5 remain missed because their targets did not hold across all three seeds. Seed 2024 continued to perform substantially worse than the other splits, and accuracy spread increased to 0.217.
-
-The largest remaining failure is `unsupported_reaction`. Its F1 was 0.000, 0.000, and 0.250 after the improvement. The model still preferred `reasoned_opinion` for unsupported statements and did not reliably learn the smallest class.
-
-I stopped this improvement at 5 epochs because more training alone had already increased split sensitivity and had not consistently fixed the minority label. My next change would directly address class imbalance rather than continuing to increase epochs.
-
-**The gap between what I meant my labels to capture and what the model learned:**
-
-I intended `unsupported_reaction` to capture short, unsupported emotional or immediate responses, while `reasoned_opinion` should contain an explained viewpoint. The confusion matrix shows that the model mainly learned the broader language of opinions and repeatedly absorbed `unsupported_reaction` into `reasoned_opinion`.
-<!-- For each criterion still missed: what you'd do, and why you stopped. -->
-
-
-<!-- If it didn't, say so. Relabelling that didn't help is a genuinely
-     interesting result and earns full credit. -->
 ### Confusion Matrix After Balanced Training — Seed 42
 
 | true \ predicted | `evidence_based` | `reasoned_opinion` | `unsupported_reaction` |
@@ -419,77 +376,20 @@ I intended `unsupported_reaction` to capture short, unsupported emotional or imm
 | **`reasoned_opinion`** | 0 | 8 | 0 |
 | **`unsupported_reaction`** | 2 | 3 | 1 |
 
-The largest remaining confusion was three real `unsupported_reaction` posts classified as `reasoned_opinion`, while zero real `reasoned_opinion` posts were classified as `unsupported_reaction`. The model still leans toward the broader `reasoned_opinion` label, but it now correctly predicts at least one `unsupported_reaction` example.
+The largest remaining confusion was three real `unsupported_reaction` posts classified as `reasoned_opinion`, while zero real `reasoned_opinion` posts were classified as `unsupported_reaction`. The model still leaned toward the broader `reasoned_opinion` label, but it now correctly predicted an `unsupported_reaction` example.
 
 **Did the second improvement help, and how do I know:**
 
-Yes. Balancing the training split produced the strongest results of all three experiments.
+Yes. Balanced training produced the strongest results of all three experiments.
 
-Compared with the five-epoch run, overall accuracy improved from 0.652, 0.696, and 0.478 to 0.696, 0.739, and 0.609. Macro F1 improved from 0.502, 0.535, and 0.420 to 0.608, 0.689, and 0.575.
+Compared with the five-epoch run, accuracy improved from 0.652, 0.696, and 0.478 to 0.696, 0.739, and 0.609. Macro F1 improved from 0.502, 0.535, and 0.420 to 0.608, 0.689, and 0.575.
 
-The most important improvement was for `unsupported_reaction`. Its F1 changed from 0.000, 0.000, and 0.250 to 0.286, 0.400, and 0.400. Although Seed 42 remained below the target of 0.35, the model no longer completely ignored the label.
+The most important improvement was for `unsupported_reaction`. Its F1 changed from 0.000, 0.000, and 0.250 to 0.286, 0.400, and 0.400. Although Seed 42 remained below the 0.35 target, the classifier no longer completely ignored the label.
 
-Performance also became more stable. Accuracy spread decreased from 0.217 after the first improvement to 0.130 after balanced training. This is still greater than 0.10, so the dataset remains sensitive to the random split, but the instability was reduced.
+Accuracy spread decreased from 0.217 after the first improvement to 0.130 after balanced training. The results remained sensitive to the random split, but the instability was reduced. Four of five acceptance criteria were met after balanced training.
 
-Four of the five acceptance criteria were met after balanced training. Criterion 5 remained missed because its target had to hold across all three seeds and Seed 42 reached only 0.286.
-
-## What's Still Broken
-
-The remaining missed criterion is the `unsupported_reaction` F1 target. Its three scores were 0.286, 0.400, and 0.400, so Seed 42 remained below the required 0.35.
-
-The Seed 42 confusion matrix shows that only one of six real `unsupported_reaction` posts was classified correctly. Three were classified as `reasoned_opinion`, and two were classified as `evidence_based`. This means the model still does not have a consistently reliable boundary for short unsupported reactions.
-
-The agreement exercise produced 30 out of 30 matches, so it did not provide evidence that I inconsistently applied the staff’s written rules. The remaining problem is better supported as a combination of limited data, overlap between reaction and opinion language, and split sensitivity. Accuracy still varied by 0.130 across seeds.
-
-With more time, I would collect additional naturally occurring `unsupported_reaction` examples, especially difficult examples that resemble `reasoned_opinion`, rather than continuing to duplicate the existing examples.
-
-**The gap between what I meant my labels to capture and what the model learned:**
-
-I intended `unsupported_reaction` to capture unsupported emotional or immediate responses, while `reasoned_opinion` should contain an explained viewpoint. Balanced training helped the model recognize some reactions, but the confusion matrix shows that it still treats many reactions as general opinions.
 ---
 
-
-
-
-**The gap between what I meant my labels to capture and what the model
-learned:**
-<!-- Two sentences. Your confusion matrix is the evidence. -->
-
-
-
-<!-- ═════════════════════════════════════════════════════════════════════
-
-     SUBMISSION CHECKLIST — unit 5
-
-       [ ] criteria.md has five numbered criteria, each naming a NUMBER
-       [ ] Each has a reason underneath tied to your data or taxonomy
-       [ ] labels.csv: at least 150 rows, text/label/note, ONE file not split
-       [ ] No label above 70%
-       [ ] All five unit 5 sections have real content
-       [ ] Label Taxonomy includes the decision rule for your hardest boundary
-       [ ] The Dataset includes three hard cases
-       [ ] results.json and test_split.csv committed (the notebook does this)
-       [ ] At least four new commits
-       [ ] Repository URL submitted — WRITE IT DOWN
-
-     SUBMISSION CHECKLIST — unit 6
-
-       [ ] Baseline vs. Trained table, with your prediction written beforehand
-       [ ] Run Log — Before, five criteria across three seeds
-       [ ] Confusion matrix TYPED AS A MARKDOWN TABLE
-       [ ] A verdict on every criterion
-       [ ] A diagnosis for every miss, using the agreement report as evidence
-       [ ] Agreement Report with every disagreement adjudicated
-       [ ] One improvement, with Run Log — After
-       [ ] What's Still Broken
-       [ ] results_three_seeds_before.json, results_three_seeds_after.json,
-           baseline_results.json and
-           agreement_results.json committed
-       [ ] At least four new commits
-       [ ] The SAME repository URL as last unit
-
-     Do not delete and recreate this repository.
-     ═════════════════════════════════════════════════════════════════════ -->
 ## Confidence Check
 
 I compared the most-confident third and least-confident third of the test predictions for each seed.
@@ -501,7 +401,48 @@ I compared the most-confident third and least-confident third of the test predic
 | 2024 | 71.4% | 28.6% | +42.9 points |
 | **Combined** | **17/21 = 81.0%** | **8/21 = 38.1%** | **+42.9 points** |
 
-Yes, the model’s confident predictions were more often correct than its uncertain predictions. Across all three seeds, the most-confident predictions were correct 81.0% of the time, compared with only 38.1% for the least-confident predictions. This suggests that the confidence score provides useful information, although the model should still not be treated as perfectly calibrated because its mean confidence values were only around 0.41–0.52.
+The model’s confident predictions were more often correct than its uncertain predictions for all three seeds. Across the runs, the most-confident predictions were correct 81.0% of the time, compared with 38.1% for the least-confident predictions. Confidence therefore provided useful information, although the relatively low confidence values show that it should not be treated as perfectly calibrated.
+
+---
+
+## Per-Label Error Analysis
+
+The weakest label after balanced training was `unsupported_reaction`. Its F1 scores were 0.286, 0.400, and 0.400. In the Seed 42 matrix, three real `unsupported_reaction` posts were predicted as `reasoned_opinion`, two were predicted as `evidence_based`, and only one was classified correctly.
+
+The three examples confused with `reasoned_opinion` were mainly speculative questions or expressions of concern:
+
+- “Will AGI happen at one moment or gradually?”
+- “My fiancé is convinced AI will probably cause a catastrophic event.”
+- The post asking whether AI will accelerate medical research.
+
+The classifier appears to associate explanatory or speculative wording with `reasoned_opinion`, even when the post supplies no checkable support.
+
+The two posts confused with `evidence_based` contained technical or numerical surface cues:
+
+- “a virtual fly driven by its real brain wiring diagram (70k simulated neurons)”
+- “AI era,” “Windows 11,” and “MS-DOS PC”
+
+The classifier appears to treat technical terms and numbers as evidence even when the post does not use them to support an argument.
+
+Four of the five incorrect predictions had confidence values between 0.389 and 0.427. The medical-research post was the exception: it was incorrectly classified as `reasoned_opinion` with 0.640 confidence. Its length and repeated argument-like questions likely made it resemble that label.
+
+The errors therefore share two patterns: unsupported speculative questions are absorbed into `reasoned_opinion`, while technical phrases and numbers are absorbed into `evidence_based`. Additional natural examples of unsupported questions containing technical language would likely improve this boundary.
+
+---
+
+## What's Still Broken
+
+The remaining missed criterion is the `unsupported_reaction` F1 target. Its final scores were 0.286, 0.400, and 0.400, so Seed 42 remained below the required 0.35.
+
+The Seed 42 matrix shows that only one of six real `unsupported_reaction` posts was classified correctly. Three were classified as `reasoned_opinion`, and two were classified as `evidence_based`. The classifier therefore still lacks a consistently reliable boundary for unsupported reactions.
+
+The agreement exercise produced 30 out of 30 matches, so it did not provide evidence that I inconsistently applied the staff’s written rules. The remaining problem is better supported as a combination of limited data, overlap between reaction and opinion language, and split sensitivity. Accuracy still varied by 0.130 across the final three seeds.
+
+With more time, I would collect additional naturally occurring `unsupported_reaction` examples, especially difficult examples that resemble `reasoned_opinion`, rather than continuing to duplicate existing examples.
+
+**The gap between what I meant my labels to capture and what the model learned:**
+
+I intended `unsupported_reaction` to capture unsupported emotional responses, predictions, and questions, while `reasoned_opinion` should contain an explained position. Balanced training helped the model recognize some reactions, but the confusion matrix shows that it still treats many speculative reactions as reasoned opinions and technical-sounding reactions as evidence.
 
 ---
 ## Per-Label Error Analysis
