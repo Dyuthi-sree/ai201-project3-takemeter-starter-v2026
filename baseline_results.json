@@ -1,0 +1,149 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "n": 23,
+  "seed": 42,
+  "held_out": true,
+  "used_definitions": true,
+  "scores": {
+    "n": 23,
+    "accuracy": 0.43478260869565216,
+    "f1_macro": 0.34722222222222215,
+    "per_label": {
+      "evidence_based": {
+        "precision": 0.5833333333333334,
+        "recall": 0.7777777777777778,
+        "f1": 0.6666666666666666,
+        "support": 9
+      },
+      "reasoned_opinion": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 8
+      },
+      "unsupported_reaction": {
+        "precision": 0.3,
+        "recall": 0.5,
+        "f1": 0.37499999999999994,
+        "support": 6
+      }
+    }
+  },
+  "predictions": [
+    {
+      "text": "In the AI era and Windows 11 times, can you troubleshoot old school ms-dos PC? Computing",
+      "gold": "unsupported_reaction",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "US Artificial Intelligence Expansion Faces Major Hurdles",
+      "gold": "evidence_based",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "Is AI helping speeding up the medical research? Are we seeing any results here, is AI helping the process? So many people are suffering from chronic illnesses. Conditions that are not curable today but could be in the future. How much is AI helping humanity reaching a state where more chronic conditions could be cured once and for all? It would be a disappointment if AI was only used to level up technology, I hope it could help the medical research today. We're living in 2026 and there shouldn't be so much suffering from chronic disorders. I hope AI could help the research and in the future give these people their lives back. What do you think, are you optimistic when it comes to AI's chances of helping medical research?",
+      "gold": "unsupported_reaction",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "What Is The Stupidest Ai Image Prompt You Can Think Of? I want to see what you can create with your imagination to create something so stupid it\u2019s funny. I think this is also cool to see others and how there mind thinks of this question.",
+      "gold": "reasoned_opinion",
+      "predicted": "unsupported_reaction"
+    },
+    {
+      "text": "Modern-Day Propaganda in the Age of AI May Be Propaganda That Never Asks Everyone to Believe the Same Thing Here's some interesting food for thought to consider regarding propaganda in the digital age. Take the data center problem, as an example. One person might see jobs, tax revenue, and technological progress. Another could see massive buildings consuming electricity and water while giving little back to the surrounding community. Someone else could see national security: if we want to compete in AI, we need the infrastructure to run it. And then there are people worried about mass surveillance. They understand exactly what these systems could make possible, more data collection, more behavioral tracking, more power concentrated in private and government hands. But even they could acquiesce or support the data centers in the near future. Why? Because they might be influenced to believe that the technology will come either way. Better to build it here, where it can be regulated. Better to stay ahead of foreign competitors. Better to support the infrastructure now and fight over how it\u2019s used later. And as construction expands, it could embolden small radical groups to take violent or illegal action against the centers. If that begins trending, the group would become the story. Anyone raising concerns about surveillance, water, energy, or corporate power could be pressured to distance themselves from the opposition. Nobody wants to be associated with extremists or labeled anti-progress. So the surveillance skeptic will go silent to avoid social scrutiny and vote rationally to choose the lesser of evils. The nationalists will vote for technological independence. The anxious voters will choose security. The optimist will choose progress. Different beliefs. Different emotional triggers. The same outcome: the data centers expand. That\u2019s what makes modern propaganda so unsettling when it becomes possible to map and understand clustered behaviors. A population doesn\u2019t have to share one belief to produce one future. It can be divided into different emotional camps, fear, pride, anger, hope, while still being guided toward the same decision by taking advantage of media feeds and our digital behaviors. So control may not be in the message these days. A lot of it could exist in the destination, itself.",
+      "gold": "evidence_based",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "LLMs vs traditional classifiers for large scale data processing Im curious how people are approaching classification tasks in data pipeline these days. Traditional classifiers can be efficient, while LLMs offer flexibility but may generate more output than the application actually needs I came across Jev by TypeSafe AI which takes another approach by producing structured decisions and probabilities that software can process directly for large scale workloads, how would you evaluate these different approaches in terms of latency, cost and accuracy? Would you specialised decision model, a traditional classifier, or a combination of both?",
+      "gold": "reasoned_opinion",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "Use your AI to produce scientific breakthroughs Customize your AI to help map ALL OF EARTH'S NATURAL PROCESSES and look for novel connections & hypotheses. Yes - you can make a scientific breakthrough with your chatgpt subscription and a little bit of ingenuity. http://forks.world",
+      "gold": "evidence_based",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "AI lab offers free plumbing and HVAC repairs across three cities to train AI robots Robotics An AI company called HUMXN is trying something interesting: it's offering free plumbing, electrical, HVAC, and other home services to qualifying homeowners in exchange for collecting real-world training data. The program is launching in Minneapolis, Chicago, and Miami. During the jobs, technicians use wearable recording technology to capture how they inspect problems, choose tools, and complete repairs. The goal is to help AI systems learn how skilled workers interact with the physical world, rather than relying entirely on text and images from the internet. This makes sense when you think about it. A robot can't learn to fix a complicated plumbing issue just by reading about plumbing. It needs data about the actual steps, decisions, tools, and unexpected situations involved. I'm curious about one thing, though: Could collecting real-world work data like this be the missing piece in making physical AI and robots genuinely useful in everyday life? And would you let a technician record their work inside your home in exchange for a free repair?",
+      "gold": "evidence_based",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "How do people make videos free? I have chatgpt premium which sadly cant generate videos, I have an idea I want to animate but all options seem to cost money, is there any free alternative?",
+      "gold": "reasoned_opinion",
+      "predicted": "unsupported_reaction"
+    },
+    {
+      "text": "AI could force 11 million US workers into new careers by 2035 https://www.cnn.com/2026/09/29/economy/us-economy-jobs-consumer-confidence-ai-jolts?utm_medium=social&utm_campaign=missions&utm_source=reddit",
+      "gold": "evidence_based",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "Ukraine has hit three Yandex data centres in a week \u2014 and Russia's AI giant says it can't predict when its chatbot and smart home services come back",
+      "gold": "evidence_based",
+      "predicted": "unsupported_reaction"
+    },
+    {
+      "text": "I wrote a book on context engineering: the discipline behind dependable AI systems I wrote a book arguing that context engineering is an old discipline (configuration management, systems engineering, domain-driven design) applied to systems that are partly prompts, partly knowledge, partly retrieval and partly emergent behaviour. 25 chapters covering context drift, knowledge graphs vs vector embeddings, token budgets and skill architecture, judge harnesses and evidence lineage, validation gates and enterprise governance. Written for senior developers, engineering managers and architects who need AI dependable in production. Kindle: https://www.amazon.com/dp/B0HMZBWH5Q",
+      "gold": "reasoned_opinion",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "My fianc\u00e9 is convinced AI will probably cause a catastrophic event. With recent AI news, he believes people may have only a decade left and feels that none of us has a future beyond the mid-2030s.",
+      "gold": "unsupported_reaction",
+      "predicted": "unsupported_reaction"
+    },
+    {
+      "text": "Companies rushed in on AI. Now some are pulling back https://www.theguardian.com/technology/2026/oct/13/ai-companies-rushed-workers-fallout",
+      "gold": "evidence_based",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "We've spent years teaching people not to trust input. Now we're giving AI agents access to our entire workspace. A coding agent might read a repository, inspect environment variables, execute shell commands, install dependencies, and access external services, all this in one workflow sometimes. The interesting security question isn't just whether the model can be manipulated. It's what damage a compromised or confused agent is actually allowed to do. If you were designing an agent sandbox from scratch, what permission would you refuse to grant by default?",
+      "gold": "reasoned_opinion",
+      "predicted": "unsupported_reaction"
+    },
+    {
+      "text": "GitHub makes Agentic Autofix generally available for code scanning alerts GitHub's Agentic Autofix is now generally available for GitHub Code Security and GitHub Advanced Security customers on Enterprise Cloud. When a user assigns a code-scanning alert to Copilot, it explores relevant files, proposes a fix, reruns CodeQL, and opens a draft pull request for review. The useful limit is that this is still a review workflow, not an automatic merge. Enterprise admins must enable the policy, and usage consumes AI Credits from the Code Security budget plus GitHub Actions minutes. It supports alerts on the repository default branch, not alerts found only on pull requests or other branches. The practical question is less whether an agent can write a patch and more how teams budget, review, and measure fixes before they merge. Sources: GitHub Changelog: https://github.blog/changelog/2026-10-15-agentic-autofix-for-code-scanning-alerts-general-availability/ GitHub Community: https://github.com/orgs/community/discussions/209845",
+      "gold": "reasoned_opinion",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "Could AI help me build a football YouTube channel?",
+      "gold": "unsupported_reaction",
+      "predicted": "unsupported_reaction"
+    },
+    {
+      "text": "Even LinkedIn is getting tired of your AI-written posts",
+      "gold": "evidence_based",
+      "predicted": "unsupported_reaction"
+    },
+    {
+      "text": "Eight states sue OpenAI over ChatGPT\u2019s alleged harms to users https://www.nbcnews.com/tech/tech-news/openai-sued-eight-states-alleged-harm-chatgpt-rcna603614",
+      "gold": "evidence_based",
+      "predicted": "evidence_based"
+    },
+    {
+      "text": "How do you assess Alexandr Wang's technical ability and leadership beyond the hype? I keep seeing Alexandr Wang get a lot of hate, and I'm not sure what the judgments are based on. I recently saw his comments about Meta's models competing with other AI labs, which made me curious how people working in AI assess him. What work or decisions would you point to when judging his technical understanding? And how would you assess his ability to lead a team and get things shipped? I'm especially interested in hearing from people at Meta or people who've worked with him. The usual genius-or-idiot takes don't tell me much. For anyone weighing Meta as an employer, the Meta Interview Questions can help with prep, and application autofill can save time comparing other opportunities through applications. I'd want firsthand context on the leadership and working environment as well. What do you think outsiders are getting right or wrong about him?",
+      "gold": "reasoned_opinion",
+      "predicted": "unsupported_reaction"
+    },
+    {
+      "text": "No scripts: a virtual fly driven by its real brain wiring diagram (70k simulated neurons), live 24/7",
+      "gold": "unsupported_reaction",
+      "predicted": "reasoned_opinion"
+    },
+    {
+      "text": "Will AGI happen at one moment or gradually? What is the most important thing you expect it to bring: stability, better reasoning, or something else?",
+      "gold": "unsupported_reaction",
+      "predicted": "unsupported_reaction"
+    },
+    {
+      "text": "The AI personas that will work are the ones that admit they\u2019re fake Noticed everyone building AI influencers and characters try to pass as real is playing it backwards. The ones that build a real audience long-term will be openly artificial. The audience knows it's a character, the character performs like it's real, and everybody's in on it. Pro wrestling figured this out decades ago \u2014 old kayfabe meant pretending it was real. Modern kayfabe is the crowd knowing and playing along anyway, and the attachment got stronger, not weaker. Meanwhile the \"totally a real person\" AI accounts all die the same way: one slip, one uncanny detail, and it turns into a scandal instead of a story. Am I wrong? Is the honesty actually the product \u2014 or do people only care when there's a chance they're being fooled?",
+      "gold": "reasoned_opinion",
+      "predicted": "unsupported_reaction"
+    }
+  ]
+}

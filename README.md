@@ -175,7 +175,13 @@ of next unit's variance. -->
 
      Don't fill these in during unit 5.
      ═══════════════════════════════════════════════════════════════════ -->
+## Stretch Features Declared Before Testing
 
+Before running the Unit 6 experiments, I decided to attempt all three stretch features:
+
+1. **Confidence check:** I will compare the accuracy of the model's most-confident third of predictions with its least-confident third.
+2. **Per-label error write-up:** I will analyze the worst-performing label from the confusion matrix, identify which label it is confused with, and inspect what the misclassified examples have in common.
+3. **Second measured improvement:** After measuring the first improvement, I will make one additional change, rerun the same three seeds, and compare a third run log against the earlier results.
 ---
 
 ## Baseline vs. Trained
@@ -183,18 +189,18 @@ of next unit's variance. -->
 <!-- Both models on the same posts. `python baseline.py --trained results.json`
      prints this table for you. -->
 
+
 | Measure | Baseline | Trained | Difference |
-|---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+|---|---:|---:|---:|
+| Overall accuracy | 0.435 | 0.565 | +0.130 |
+| Macro F1 | 0.347 | 0.431 | +0.083 |
+| F1 — `evidence_based` | 0.667 | 0.625 | -0.042 |
+| F1 — `reasoned_opinion` | 0.000 | 0.667 | +0.667 |
+| F1 — `unsupported_reaction` | 0.375 | 0.000 | -0.375 |
 
-**What I predicted before I looked:**
-<!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
-     prediction made afterwards isn't one. -->
+**What I predicted before I looked:** I expected the trained model to outperform the zero-shot baseline overall because it was fine-tuned on posts from the same community. I expected both models to struggle most with `unsupported_reaction` because it is the smallest label and overlaps with `reasoned_opinion`.
 
-**What the gap actually means:**
+**What the gap actually means:** The trained model improved overall accuracy by 0.130 and macro F1 by 0.083, so fine-tuning added measurable value. Most of the improvement came from `reasoned_opinion`, whose F1 increased from 0.000 to 0.667. However, fine-tuning reduced `unsupported_reaction` F1 from 0.375 to 0.000 and slightly reduced `evidence_based` F1. Therefore, the trained model learned `reasoned_opinion` well but did not learn a balanced boundary across all three labels.
 <!-- If the baseline matched your trained model, your fine-tuning added
      nothing — and that is a real finding, not a failure. Say it plainly. -->
 
