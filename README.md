@@ -490,6 +490,18 @@ learned:**
 
      Do not delete and recreate this repository.
      ═════════════════════════════════════════════════════════════════════ -->
+## Confidence Check
+
+I compared the most-confident third and least-confident third of the test predictions for each seed.
+
+| Seed | Most-confident third | Least-confident third | Difference |
+|---|---:|---:|---:|
+| 42 | 71.4% | 42.9% | +28.6 points |
+| 7 | 100.0% | 42.9% | +57.1 points |
+| 2024 | 71.4% | 28.6% | +42.9 points |
+| **Combined** | **17/21 = 81.0%** | **8/21 = 38.1%** | **+42.9 points** |
+
+Yes, the model’s confident predictions were more often correct than its uncertain predictions. Across all three seeds, the most-confident predictions were correct 81.0% of the time, compared with only 38.1% for the least-confident predictions. This suggests that the confidence score provides useful information, although the model should still not be treated as perfectly calibrated because its mean confidence values were only around 0.41–0.52.
 
 ---
 
