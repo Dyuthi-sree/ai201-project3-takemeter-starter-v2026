@@ -343,7 +343,15 @@ I increased training from 3 epochs to 5 epochs while keeping the model, dataset,
 
 The model produced an F1 of 0.000 for `unsupported_reaction` across all three seeds and never predicted that label in the Seed 42 confusion matrix. Because the agreement report showed 100% agreement under clearly written rules, I tested whether the model was undertrained rather than immediately changing the labels. Two additional epochs give it more opportunities to learn patterns associated with the smallest label.
 
-### Run Log — After
+## Second Improvement — Balanced Training Data
+
+**What I changed:**
+
+I balanced only the training portion of each split by randomly duplicating examples from the smaller labels until every training label had the same number of examples as the largest label. Validation and test examples were not duplicated or changed.
+
+**Which diagnosis pointed at it:**
+
+After five epochs, `unsupported_reaction` still had F1 scores of 0.000, 0.000, and 0.250. It was the smallest label in the original dataset, with 37 examples compared with 54 `reasoned_opinion` and 59 `evidence_based` examples. Additional epochs improved overall performance but did not make the model reliably predict the minority class, so the second change directly addresses class imbalance.
 
 ### Run Log — After
 
