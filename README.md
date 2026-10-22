@@ -87,7 +87,7 @@ TakeMeter is a text classifier trained on public posts collected from the r/arti
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `reasoned_opinion` and `unsupported_reaction`
 
 **The decision rule I used every time:**
 <!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
