@@ -504,5 +504,26 @@ I compared the most-confident third and least-confident third of the test predic
 Yes, the model’s confident predictions were more often correct than its uncertain predictions. Across all three seeds, the most-confident predictions were correct 81.0% of the time, compared with only 38.1% for the least-confident predictions. This suggests that the confidence score provides useful information, although the model should still not be treated as perfectly calibrated because its mean confidence values were only around 0.41–0.52.
 
 ---
+## Per-Label Error Analysis
 
+The weakest label after balanced training was `unsupported_reaction`. Its F1 scores were 0.286, 0.400, and 0.400 across the three seeds. In the Seed 42 confusion matrix, three real `unsupported_reaction` posts were predicted as `reasoned_opinion`, two were predicted as `evidence_based`, and only one was classified correctly.
+
+The three posts confused with `reasoned_opinion` were primarily speculative questions or expressions of concern. For example:
+
+- “Will AGI happen at one moment or gradually?”
+- “My fiancé is convinced AI will probably cause a catastrophic event.”
+- The post asking whether AI will accelerate medical research.
+
+These posts contain opinions, predictions, or extended questions, so the model appears to associate their explanatory or speculative wording with `reasoned_opinion`. However, they were labelled `unsupported_reaction` because they did not provide checkable support for their concerns or predictions.
+
+The two posts confused with `evidence_based` contained technical or numerical surface cues:
+
+- “a virtual fly driven by its real brain wiring diagram (70k simulated neurons)”
+- “AI era,” “Windows 11,” and “MS-DOS PC”
+
+The model appears to treat specific technical terms and numbers as evidence even when the post does not use them to support an argument. This resembles the taxonomy’s difficult distinction between merely mentioning a fact and using a fact as evidence.
+
+Four of these five incorrect predictions had relatively low confidence, between 0.389 and 0.427. The medical-research post was the exception: it was incorrectly predicted as `reasoned_opinion` with 0.640 confidence. Its longer explanation and repeated argument-like questions likely made it resemble that label.
+
+Overall, the remaining errors share two patterns: speculative questions are absorbed into `reasoned_opinion`, while technical phrases and numbers are absorbed into `evidence_based`. More boundary examples of unsupported questions containing technical language would likely improve this label.
 📖 **How to run this project: [RUNNING.md](RUNNING.md)**
